@@ -13,6 +13,6 @@ export async function POST(req){
         address,
         contact
     })
-    returning('*')
+
     return Response.json({body})
 }

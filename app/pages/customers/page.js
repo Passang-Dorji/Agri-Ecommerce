@@ -1,7 +1,9 @@
 "use client"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-export default function Home() {
+export default function searchProducts() {
+    const router = useRouter()
 	const [name, setName] = useState([])
     const [products,setProducts]=useState([])
     async function getDetails() {
@@ -19,14 +21,14 @@ export default function Home() {
     }
     return (
         <div>
-            <input className="text-black ml-5"
+            <input className="text-black ml-5 my-4 pl-4"
                    type="text"
-                   placeholder="enter product name"
+                   placeholder="Search Agri-Products"
                    onChange={(e)=>setName(e.target.value)}
                    value={name}
             ></input>
             <button
-                className="text-white"
+                className="text-white ml-4 border-2 rounded-full px-4"
                 onClick={getDetails}
             >
                 search
@@ -36,11 +38,16 @@ export default function Home() {
                     return (
                         <div className=" mt-6 border-2 rounded-lg px-3 py-3 w-2/3"key={product.id}>
                             <p className="font-bold ">{product.product_name}</p> 
-                            <p className="font-bold">Discription:{product.discription}</p>
-                            <p className="font-bold ">PRICE: {product.product_price}</p>
-                            <p className="font-bold ">QUANTITY:{product.quantity}</p>
-                            <p className="font-bold ">Seller Name:{product.seller_name}</p>
-                            <p className="font-bold ">Seller Address:{product.seller_address}</p>
+                            <p className="font-bold">Discription : {product.discription}</p>
+                            <p className="font-bold ">PRICE : Nu {product.product_price}/- per kg</p>
+                            <p className="font-bold ">QUANTITY : {product.quantity} KG avialable</p>
+                            <p className="font-bold ">Seller Name : {product.seller_name}</p>
+                            <p className="font-bold ">Seller Address : {product.seller_address}</p>
+                            <div className="flex justify-end">
+                            <button className="text-white ml-4 border-2 rounded-full px-4 "
+                                onClick= {()=>router.push('/pages/makeorder')}
+                            > order</button>
+                            </div>
                         </div>
                     )
                })}

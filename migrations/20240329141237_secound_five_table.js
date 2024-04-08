@@ -8,7 +8,7 @@ exports.up = function(knex) {
             table.integer('order_id').unsigned().references('orders.id')
             table.integer('product_id').unsigned().references('products.id')
             table.integer('quantity').notNullable()
-            table.decimal('price_in_perchase').notNullable()
+            
   })
         .createTable('cart',(table)=>{
             table.increments()
@@ -42,6 +42,6 @@ exports.down = function(knex) {
             .dropTable('payment_method')
             .dropTable('review')
             .dropTable('cart')
-            .dropTable('order_items')
+            .dropTable('order_ithems')
   
 };
