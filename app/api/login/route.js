@@ -13,6 +13,7 @@ export async function POST(req){
 
 	if (isValidLogin) {return Response.json({ data: 
       {
+        id: foundUser.id,
         name: foundUser.name,
         email: foundUser.email,
         address: foundUser.address,

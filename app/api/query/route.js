@@ -6,6 +6,6 @@ export async function GET(){
         .join('products','order_ithems.product_id','products.id')
         .join('users','users.id','orders.users_id')
         .orderBy('order_date','desc')
-        .select('orders.*','products.name as product_name','orders.amount','users.name as customer_name','users.contact')
+        .select('orders.*','products.name as product_name','order_ithems.quantity as ordered_quantity','users.name as customer_name','users.contact')
     return Response.json({ data: data })
 }
