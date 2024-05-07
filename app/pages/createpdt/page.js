@@ -46,7 +46,7 @@ export default function Home() {
             <div className="text-black text-2xl font-bold my-3 ml-4" >
                 Add Products For Sale
             </div>
-        <input className="text-black ml-5 border-black rounded-full my-4 px-4 border-2 border-black py-2"
+        <input className="text-black ml-5 rounded-full my-4 px-4 border-2 border-black py-2"
                type="text"
                placeholder="enter product name"
                onChange={(e)=>setName(e.target.value)}

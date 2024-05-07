@@ -63,7 +63,7 @@ export default function Home({ params }){
                         <p className="font-bold mx-4 my-4 "> Product Description : {product.product_discription}</p>
                             <img 
                                 src={product.other_details}
-                                className="h-full w-full rounded-full"
+                                className="h-1/2 w-1/2 rounded-lg px-4"
                             />
                             <form className="flex justify-end" onSubmit={(formEvent) => addProductToCart(formEvent, product)}>
                                 <input className="text-black w-20 mb-2 rounded-2xl pl-2" type="number" name="quantity" />

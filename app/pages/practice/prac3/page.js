@@ -1,6 +1,6 @@
 "use client"
 import { UserContext } from "@/app/state/user-context"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useCallback, useState } from "react"
 
 export default function getProducts({params}){
     const [products,setProducts] = useState([])
@@ -22,14 +22,14 @@ export default function getProducts({params}){
             "status":"pending",
             "address":formData.get("address"),
             "payment":formData.get("payment"),
-            "order_ithems":orderItems
+            "order_itesms":orderItems
            }
            const res = await fetch(`http://localhost:3000/api/orders`,{
                 method:'POST',
                 body:JSON.stringify(body)
            })
        }
-       useEffect(() =>{
+       useCallback(() =>{
            async function getPdtDetails(){
             const productName = params.name
                const response = await fetch(`/api/products/search?p_name=${productName}`)
@@ -75,9 +75,9 @@ export default function getProducts({params}){
                         ))}
                         <form className="my-4 mx-2"onSubmit={submitOrder}>
                             <p className="font-bold">Address</p>
-                            <input className="text-black  rounded-2xl pl-4" type="text" name="address" />
+                            <input className="text-black pl-2 rounded-2xl pl-4" type="text" name="address" />
                             <p className="font-bold">Payment</p>
-                            <input className="text-black rounded-2xl pl-4" type="text" name="payment" />
+                            <input className="text-black pl-2 rounded-2xl pl-4" type="text" name="payment" />
                             <button
                                 className="text-white ml-4 border-2 rounded-full px-4 "
                                 type="submit"
