@@ -6,7 +6,7 @@ import knex from '@/database';
             .distinctOn('products.id')
             .where('prices.valid_from','<',new Date())
             .orderBy(['products.id',{column:'prices.valid_from',order:'desc'}])
-            .select('products.name as product_name',knex.raw('CAST(prices.price AS FLOAT) as price'),'inventory.quantity')
+            .select('products.id','products.name as product_name',knex.raw('CAST(prices.price AS FLOAT) as price'),'inventory.quantity')
             return Response.json({data})
  }
 export async function POST(req){
