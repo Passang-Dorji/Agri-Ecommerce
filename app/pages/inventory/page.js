@@ -1,10 +1,11 @@
 "use client";
+import React from "react";
 import { useState, useEffect } from "react";
+import SearchBar from "@/app/components/searchbar";
+import Table from "@/app/components/table";
 
-export default function Home() {
+export default function InventoryPage() {
   const [inventory, setInventory] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
   const [state, setState]= useState(false)
   const [id, setId]= useState()
 
@@ -25,7 +26,7 @@ export default function Home() {
     inventoryList();
   }, []);
 
-  async function searchProducts() {
+  async function searchProducts(search) {
     try {
       const response = await fetch(
         `http://localhost:3000/api/inventory/search?search=${search}`
@@ -34,8 +35,7 @@ export default function Home() {
         throw new Error("Network response was not okay");
       }
       const { data } = await response.json();
-      setProducts(data);
-      setSearch("");
+      setInventory(data);
     } catch (error) {
       console.error("error fetching data", error);
     }
@@ -58,68 +58,43 @@ export default function Home() {
       }
       setState(false)
       inventoryList()
-      setProducts([])
     }catch(error){
       console.error("Update failed",error)
     }
   }
   return (
-    <div className="flex relative">
-      <div className="w-1/2 mx-4 ">
-        <p className="font-bold text-2xl ml-2 mt-2">Inventory List</p>
-        {inventory.map((intven) => {
-          return (
-            <div
-              className="ml-4 mt-4 border-2 border-white rounded-lg px-4 py-2"
-              key={intven.id}
-            >
-              <p>Product name: {intven.product_name}</p>
-              <p>Product price: {intven.price}</p>
-              <p>Quantity: {intven.quantity}</p>
-              <button className="border-2 border-white"
-                onClick={()=> {
-                  setState(!state)
-                  setId(intven.id)
-                }}
-              >Stock Update
-              </button>
-            </div>
-          );
-        })}
+    <div className="relative mt-24">
+      <div className="w-2/3 h-12 ml-48 mt-20 flex">
+        <SearchBar onSearch={searchProducts} />
       </div>
-      <div className="w-1/2 bg-white mx-4 mt-4">
-        <input
-          className="rounded-lg ml-4 my-4 border-2 border-black text-black px-2"
-          type="text"
-          placeholder="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button
-          className="border-2 border-black rounded-lg text-black px-2 ml-2"
-          onClick={searchProducts}
-        >
-          Search
-        </button>
-        {products.map((product) => {
-          return (
-            <div className="text-black ml-2 mt-4 font-bold bg-transparent/30" key={product.id}>
-              <p>Product name: {product.product_name}</p>
-              <p>Product price: {product.price}</p>
-              <p>Quantity: {product.quantity}</p>
-              <button className="border-2 border-black px-2"
-                onClick={()=> {
-                  setState(!state)
-                  setId(product.id)
-                }}
-              > Stock Update
-              </button>
-            </div>
-          )
-        })}
+      <div className="w-2/3 ml-48 mt-10">
+        <Table
+           data={inventory}
+           headers={["Product name", "Price", "Quantity", "Update"]}
+           renderRow={(item, index) => (
+            <React.Fragment key={item.id}>
+              <td className="font-bold text-center h-11">{item.product_name}</td>
+              <td className="mx-6 text-center">{item.price} /-</td>
+              <td className="mx-6 text-center">{item.quantity}</td>
+              <td className="mx-6 text-center">
+                <button
+                  className="mt-2"
+                  onClick={() => {
+                    setState(!state);
+                    setId(item.id);
+                  }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                      <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                   </svg>
+                </button>
+              </td>
+            </React.Fragment>
+          )}
+      />
       </div>
-      <div className= {`${state? "static" :"hidden"} bg-emerald-400	 text-black absolute top-1/3 left-1/3 border-2 border-black rounded-lg h-1/2 w-1/3 px-4 py-2`}
-      >
+      <div className= {`${state? "static" :"hidden"} bg-emerald-400	 text-black absolute top-1/3 left-1/3 border-2 border-black rounded-lg h-1/2 w-1/3 px-4 py-2`} >
         <form onSubmit={submitUpdate}>
           <input name="productId" value={id} className="hidden"/>
           <p> Quantity </p>
